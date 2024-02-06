@@ -1,0 +1,125 @@
+#!/usr/bin/env bash
+set -e
+
+API_BASE_IMAGES=( api api-node )
+
+show_command_title "${API_SUBPROJECT_NAME}" "${API_SUBPROJECT_LOCATION}" "${@}"
+
+case ${1} in
+  setup)
+    shift
+    show_info "Build images"
+    echo
+    [[ "${BASE_ONLY:-false}" == 'true' ]] && return 0
+    (
+      HIDE_PROJECT_TITLE=true HIDE_COMMAND_TITLE=true IS_CI='true' just api image build
+    )
+    # @todo add laravel
+    echo
+    # HIDE_PROJECT_TITLE=true HIDE_COMMAND_TITLE=true just api composer install --ignore-platform-reqs
+    echo
+    # HIDE_PROJECT_TITLE=true HIDE_COMMAND_TITLE=true just api yarn install --frozen-lockfile
+    echo
+    # HIDE_PROJECT_TITLE=true HIDE_COMMAND_TITLE=true just api db:reset
+    echo
+  ;;
+  artisan|art)
+    shift
+    ${DOCKER_COMPOSE_EXECUTABLE} $(run_or_exec 'api') /usr/bin/php artisan "$@"
+  ;;
+  php)
+    shift
+    ${DOCKER_COMPOSE_EXECUTABLE} $(run_or_exec 'api') /usr/bin/php "$@"
+    ;;
+  debug)
+    shift
+    ${DOCKER_COMPOSE_EXECUTABLE} $(run_or_exec 'api' '-e XDEBUG_SESSION=1') ${@}
+    ;;
+  code:analyse|code:analyse:fix|code:style|code:style:fix)
+    service_name='api'
+    if [[ "${IS_CI:-false}" == 'true' && "${APP_ENV}" == 'testing' ]]; then
+      export COMPOSE_FILE="docker-compose.tooling.yml:docker-compose.base.yml:docker-compose.production.yml:docker-compose.validate.yml"
+    fi
+    ${DOCKER_COMPOSE_EXECUTABLE} $(run_or_exec ${service_name} -T) composer run "$@"
+    ;;
+  code:test|code:test:ci)
+    ${DOCKER_COMPOSE_EXECUTABLE} $(run_or_exec 'api' -T) composer run "$@"
+    ;;
+  tinker)
+    shift
+    ${DOCKER_COMPOSE_EXECUTABLE} $(run_or_exec 'api' '-T') /usr/bin/php artisan tinker "$@"
+    ;;
+  composer)
+    shift
+    ${DOCKER_COMPOSE_EXECUTABLE} $(run_or_exec 'api') composer "$@"
+    ;;
+  mysql)
+    user=${DB_USERNAME}
+    database=${DB_DATABASE}
+    if [[ "${AS_ROOT:-false}" == 'true' ]]; then
+        user=root
+        database=''
+    fi
+
+    HIDE_PROJECT_TITLE=true HIDE_COMMAND_TITLE=true just api bash \
+      -c "mysql --user=${user} --host=${DB_HOST} --password=${DB_PASSWORD} ${database}"
+    ;;
+  bash|shell)
+    shift
+    ${DOCKER_COMPOSE_EXECUTABLE} $(run_or_exec 'api') bash "$@"
+    ;;
+  yarn)
+    shift
+    ${DOCKER_COMPOSE_EXECUTABLE} run --rm api-node "$@"
+    ;;
+  db-reset|db:reset)
+    shift
+    HIDE_PROJECT_TITLE=true HIDE_COMMAND_TITLE=true just api artisan db:wipe
+    HIDE_PROJECT_TITLE=true HIDE_COMMAND_TITLE=true just api artisan migrate
+    HIDE_PROJECT_TITLE=true HIDE_COMMAND_TITLE=true just api artisan db:seed
+    ;;
+  image)
+    shift 1
+    action="${1}"
+    service="${2:-api}"
+
+    if [[ "${2}" == --* ]]; then
+      service=api
+    fi
+
+    if [[ "${2}" != --* && "$#" == '2' ]]; then
+      shift 2
+    else
+      shift 1
+    fi
+
+    if [[ "${IS_CI:-false}" == 'true' ]]; then
+      for image_name in ${API_BASE_IMAGES[@]}; do
+        image_build_and_push_command ${action} ${image_name} "$@"
+      done
+      return 0
+    fi
+
+    image_build_and_push_command ${action} ${service} "$@"
+  ;;
+  *)
+    echo -e "  ${c_red}USAGE:${c_reset} just|j api|a [command]"
+    echo
+    echo -e "  supported commands:\n"
+    echo -e "    setup"
+    echo -e "    artisan|art"
+    echo -e "    php"
+    echo -e "    debug"
+    echo -e "    code:analyse[:fix]"
+    echo -e "    code:style[:fix]"
+    echo -e "    code:test[:ci]"
+    echo -e "    tinker"
+    echo -e "    composer"
+    echo -e "    mysql"
+    echo -e "    bash|shell"
+    echo -e "    yarn"
+    echo -e "    db-reset"
+    echo -e "    image [command]"
+    exit 1
+  ;;
+esac

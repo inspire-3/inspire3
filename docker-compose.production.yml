@@ -1,0 +1,38 @@
+version: '3.11'
+
+x-api-build-and-image-production: &api_build_and_image_production
+  build:
+    dockerfile: Dockerfile
+    target: api-php-production
+  image: '${DOCKER_IMAGE_PREFIX}/api:${GIT_CURRENT_COMMIT_ID}'
+
+services:
+  api:
+    <<: *api_build_and_image_production
+
+  api-queue:
+    <<: *api_build_and_image_production
+
+  api-schedule:
+    <<: *api_build_and_image_production
+
+  api-node:
+    build:
+      dockerfile: Dockerfile
+      target: api-node-production
+    image: '${DOCKER_IMAGE_PREFIX}/api-node:${GIT_CURRENT_COMMIT_ID}'
+    volumes:
+      - './src/api:/var/www/html'
+      - './src/langchain/data:/var/www/html/langchain-data'
+
+  api-spec:
+    build:
+      dockerfile: Dockerfile
+      target: api-spec-production
+    image: '${DOCKER_IMAGE_PREFIX}/api-spec:${GIT_CURRENT_COMMIT_ID}'
+
+  langchain:
+    build:
+      dockerfile: Dockerfile
+      target: langchain-production
+    image: '${DOCKER_IMAGE_PREFIX}/langchain:${GIT_CURRENT_COMMIT_ID}'

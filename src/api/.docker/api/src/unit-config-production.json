@@ -1,0 +1,46 @@
+{
+    "listeners": {
+        "*:80": {
+            "pass": "routes"
+        }
+    },
+    "routes": [
+        {
+            "match": {
+                "uri": "!/index.php"
+            },
+            "action": {
+                "share": "/var/www/html/public$uri",
+                "fallback": {
+                    "pass": "applications/api"
+                }
+            }
+        }
+    ],
+    "applications": {
+        "api": {
+            "type": "php",
+            "limits": {
+                "requests": 1000,
+                "timeout": 600
+            },
+            "processes": 10,
+            "user": "www-data",
+            "group": "www-data",
+            "working_directory": "/var/www/html",
+            "root": "/var/www/html/public",
+            "script": "index.php",
+            "environment": {
+                "XDEBUG_MODE": "off"
+            }
+        }
+    },
+    "access_log": "/dev/stdout",
+    "settings": {
+        "http": {
+            "body_read_timeout": 30,
+            "max_body_size": 536870912,
+            "server_version": false
+        }
+    }
+}

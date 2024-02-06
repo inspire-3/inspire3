@@ -1,0 +1,13 @@
+{
+  "environment": "local",
+  "product": "app",
+  "version": {
+    "commit": null,
+    "deployedAt": 0
+  },
+  "cicd": {
+    "mergeRequestId": null,
+    "pipelineId": null,
+    "pipelineUrl": null
+  }
+}

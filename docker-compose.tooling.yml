@@ -1,0 +1,68 @@
+version: '3.11'
+services:
+  environment:
+    build:
+      context: src/.environment/.docker
+      # noinspection ComposeUnknownKeys
+      additional_contexts:
+        - environment-sources=./src/.environment
+      dockerfile: Dockerfile
+      cache_from:
+        - ${DOCKER_REGISTRY}/${DOCKER_ORGANISATION}/tooling/environment:latest
+      # noinspection ComposeUnknownKeys
+      tags:
+        - '${DOCKER_REGISTRY}/${DOCKER_ORGANISATION}/tooling/environment:${GIT_CURRENT_COMMIT_ID}'
+    image: ${DOCKER_REGISTRY}/${DOCKER_ORGANISATION}/tooling/environment:latest
+    environment:
+      USERID: '${USERID}'
+      ENVIRONMENT_ENCRYPTION_KEY: "${ENVIRONMENT_ENCRYPTION_KEY:-''}"
+    volumes:
+      - '.:/var/www/html'
+  root:
+    build:
+      context: src/.root/.docker
+      # noinspection ComposeUnknownKeys
+      additional_contexts:
+        - root-sources=.
+      dockerfile: Dockerfile
+      target: root-local
+      cache_from:
+        - ${DOCKER_REGISTRY}/${DOCKER_ORGANISATION}/tooling/root:latest
+      # noinspection ComposeUnknownKeys
+      tags:
+        - '${DOCKER_REGISTRY}/${DOCKER_ORGANISATION}/tooling/root:${GIT_CURRENT_COMMIT_ID}'
+    image: ${DOCKER_REGISTRY}/${DOCKER_ORGANISATION}/tooling/root:latest
+    environment:
+      USERID: '${USERID}'
+    volumes:
+      - '.:/var/www/html'
+
+  sws: #static webserver
+    build:
+      context: src/.sws/.docker
+      # noinspection ComposeUnknownKeys
+      additional_contexts:
+        - sws-sources=./src/.sws
+      dockerfile: Dockerfile
+      cache_from:
+        - ${DOCKER_REGISTRY}/${DOCKER_ORGANISATION}/tooling/sws:latest
+      # noinspection ComposeUnknownKeys
+      tags:
+        - '${DOCKER_REGISTRY}/${DOCKER_ORGANISATION}/tooling/sws:${GIT_CURRENT_COMMIT_ID}'
+    image: ${DOCKER_REGISTRY}/${DOCKER_ORGANISATION}/tooling/sws:latest
+    ports:
+      - '${SERVER_PORT:-8085}:80'
+    environment:
+      SERVER_ROOT: '${SERVER_ROOT:-/public}'
+      SERVER_INDEX_FILES: '${SERVER_INDEX_FILES:-index.html}'
+
+  depends-on-placeholder:
+    build:
+      context: .
+      # noinspection ComposeUnknownKeys
+      dockerfile_inline: |
+        FROM alpine:3.18.4
+      cache_from:
+        - ${DOCKER_REGISTRY}/${DOCKER_ORGANISATION}/tooling/depends-on-placeholder:latest
+    image: ${DOCKER_REGISTRY}/${DOCKER_ORGANISATION}/tooling/depends-on-placeholder:latest
+    command: /bin/true

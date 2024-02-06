@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+JUST_SCRIPT_PATH="$(dirname -- "${BASH_SOURCE[0]}")"
+
+"${JUST_SCRIPT_PATH}/just" $@

@@ -1,0 +1,75 @@
+#!/usr/bin/env bash
+set -e
+DRY_RUN_MESSAGE=''
+if [[ "${DRY_RUN:-false}" == 'true' ]]; then
+    DRY_RUN_MESSAGE='[IS_DRY_RUN] '
+fi
+
+local_show_command_title() {
+    show_command_title "${CICD_SUBPROJECT_NAME}" "${CICD_SUBPROJECT_LOCATION}" "${IS_DRY_RUN}${@}"
+}
+
+case ${1} in
+    cleanup|cleanup-files)
+        local_show_command_title "${@}"
+        shift 1
+        files="${@}"
+        show_command_title "[${CICD_SUBPROJECT_NAME}]" "remove files: ${files[*]}"
+        [[ "$#" == "0" ]] \
+            && show_error "no file paths provided, aborting" \
+            && return 0
+
+        for file in ${files[@]}; do
+            if [[ -f "${file}" && "${DRY_RUN:-false}" == 'false' ]]; then
+                rm -f "${file}"
+            fi
+            echo -e "    - ${file} removed"
+        done
+        echo
+    ;;
+    do)
+        shift
+        source .just/digitalocean.sh
+    ;;
+    resolve)
+        shift 1
+        SED_COMMAND="$(resolve_sed_command)"
+        value=${1}
+        [[ -z "${value}" ]] \
+            && show_error "value argument required, but missing" \
+            && exit 1
+
+        environment="${2:-null}"
+        [[ "${environment}" == 'null' ]] \
+            && show_error "environment argument required, but missing" \
+            && exit 1
+
+        pr_id=${3}
+        [[ "${environment}" != "pr" ]] \
+            && echo "${value}" \
+            && return 0
+
+        [[ -z "${pr_id}" ]] \
+            && show_error "pr id argument required, but missing" \
+            && exit 1
+
+        echo "${value}" | ${SED_COMMAND} "s|${PR_ID_PLACEHOLDER-::pr_number::}|${pr_id}|"
+    ;;
+    ip:v4:fetch)
+        shift 1
+        ensure_tool_is_present 'curl'
+
+        curl -s 'https://api.ipify.org'
+    ;;
+    *)
+        echo -e "  ${c_red}USAGE:${c_reset} just|j ${CICD_SUBPROJECT_NAME}|ci [command]"
+        echo
+        echo -e "  supported commands:\n"
+        echo -e "    cleanup|cleanup-files [file]+"
+        echo -e "    do [command]"
+        echo -e "    resolve [value] [environment] [pr_id]"
+        echo -e "    ip:fetch"
+        echo
+        exit 1
+    ;;
+esac

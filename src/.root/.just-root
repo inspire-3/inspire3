@@ -1,0 +1,37 @@
+#!/usr/bin/env bash
+set -e
+
+show_command_title "${ROOT_AS_SUBPROJECT_NAME}" "${ROOT_AS_SUBPROJECT_LOCATION}" "${@}"
+
+root_action="${1:-null}"
+[[ $# -gt 0 ]] && shift 1
+
+case "${root_action}" in
+    setup)
+        ${DOCKER_COMPOSE_EXECUTABLE} build root
+    ;;
+    bash|shell)
+        ${DOCKER_COMPOSE_EXECUTABLE} run --rm root bash "$@"
+    ;;
+    code:analyse|code:analyse:fix|code:style|code:style:fix)
+        ${DOCKER_COMPOSE_EXECUTABLE} run --rm -T root "${root_action}" "$@"
+    ;;
+    yarn)
+        ${DOCKER_COMPOSE_EXECUTABLE} run --rm root yarn "$@"
+    ;;
+    image)
+        action="${1}"
+        shift 1
+        image_build_and_push_command ${action} root "$@"
+    ;;
+    null|*)
+        echo -e "  ${c_red}USAGE:${c_reset} just|j root|r [command]"
+        echo
+        echo -e "  supported commands:\n"
+        echo -e "    bash|shell"
+        echo -e "    code:analyse[:fix]"
+        echo -e "    code:style[:fix]"
+        echo -e "    image [command]"
+        exit 1
+    ;;
+esac

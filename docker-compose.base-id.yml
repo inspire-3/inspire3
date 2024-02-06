@@ -1,0 +1,31 @@
+version: '3.11'
+services:
+  api:
+    build:
+      # noinspection ComposeUnknownKeys
+      tags:
+        - '${DOCKER_IMAGE_PREFIX}/api:base-${GIT_CURRENT_COMMIT_ID}'
+
+  api-node:
+    build:
+      # noinspection ComposeUnknownKeys
+      tags:
+        - '${DOCKER_IMAGE_PREFIX}/api-node:base-${GIT_CURRENT_COMMIT_ID}'
+
+  api-spec:
+    build:
+      # noinspection ComposeUnknownKeys
+      tags:
+        - '${DOCKER_IMAGE_PREFIX}/api-spec:base-${GIT_CURRENT_COMMIT_ID}'
+
+  langchain:
+    build:
+      # noinspection ComposeUnknownKeys
+      tags:
+        - '${DOCKER_IMAGE_PREFIX}/langchain:base-${GIT_CURRENT_COMMIT_ID}'
+
+  langchain-notebooks:
+    build:
+      # noinspection ComposeUnknownKeys
+      tags:
+        - '${DOCKER_IMAGE_PREFIX}/langchain-notebooks:base-${GIT_CURRENT_COMMIT_ID}'

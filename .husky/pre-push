@@ -1,0 +1,25 @@
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
+
+HUSKY_SKIP_ALL_STEPS="${HUSKY_SKIP_ALL_STEPS:-false}"
+
+echo "RUN git 'pre-push' hook"
+echo
+
+if [ "${HUSKY_SKIP_ALL_STEPS}" = 'true' ]; then
+    echo "INFO:  HUSKY_SKIP_ALL_STEPS = '${HUSKY_SKIP_ALL_STEPS}'"
+    exit 0
+fi
+
+if [ "${HUSKY_SKIP_PRE_PUSH_STEP:-false}" = 'true' ]; then
+    echo "INFO:  HUSKY_SKIP_PRE_PUSH_STEP = '${HUSKY_SKIP_PRE_PUSH_STEP}'"
+    exit 0
+fi
+
+HIDE_PROJECT_TITLE=true HIDE_COMMAND_TITLE=true bin/just up
+echo
+HIDE_PROJECT_TITLE=true bin/just code:style
+echo
+HIDE_PROJECT_TITLE=true bin/just code:analyse
+
+echo # added by intention

@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+set -e
+
+show_command_title "${SWS_AS_SUBPROJECT_NAME}" "${SWS_AS_SUBPROJECT_LOCATION}" "${@}"
+
+sws_action="${1:-null}"
+[[ $# -gt 0 ]] && shift 1
+
+case "${sws_action}" in
+    setup)
+        ${DOCKER_COMPOSE_EXECUTABLE} build sws
+    ;;
+    bash|shell)
+        ${DOCKER_COMPOSE_EXECUTABLE} run --rm root sws "$@"
+    ;;
+    image)
+        action="${1}"
+        shift 1
+        image_build_and_push_command ${action} sws "$@"
+    ;;
+    null|*)
+        echo -e "  ${c_red}USAGE:${c_reset} just|j sws|s [command]"
+        echo
+        echo -e "  supported commands:\n"
+        echo -e "    setup"
+        echo -e "    bash|shell"
+        echo -e "    image [command]"
+        exit 1
+    ;;
+esac

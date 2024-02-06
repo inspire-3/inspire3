@@ -1,0 +1,8 @@
+version: '3.11'
+services:
+  api:
+    volumes:
+      - './src/api/storage:/var/www/html/storage'
+    depends_on:
+      depends-on-placeholder:
+        condition: service_started
