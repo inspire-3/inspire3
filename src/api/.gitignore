@@ -1,0 +1,95 @@
+# // old static site //////////////////////////////////////////////////////////
+.static
+.templates
+
+# // exclude IDE configs //////////////////////////////////////////////////////
+.idea
+.vscode
+
+# // exclude deployment artifacts //////////////////////////////////////////////
+/dist
+dist.artifact
+
+# // exclude package manager artifacts /////////////////////////////////////////
+/.venv
+/node_modules/*
+!/node_modules/.gitkeep
+/vendor
+
+# // exclude environment variables /////////////////////////////////////////////
+/.env
+/..env*
+/.env.*
+!/.env.template
+!/.env.example
+!/.env.dc
+!/.env.*.encrypted
+!/.env.dc.default
+!/.env.dc.template
+!/.env.dc*.template
+!/.env.prod.build
+
+# // exclude credentials ///////////////////////////////////////////////////////
+/.vault-pass
+/composer.auth.json
+
+# // exclude temp data
+/public/hot
+/public/storage
+/storage/*.key
+.phpstan/*
+.reports/*
+!.reports/.gitkeep
+
+# // artifacts repository //////////////////////////////////////////////////////
+.artifacts
+
+# // exclude backups ///////////////////////////////////////////////////////////
+.backup/*
+!.backup/.gitkeep
+storage/backup
+
+# // exclude media ///////////////////////////////////////////////////////////
+storage/media/*
+!storage/media/smaller_image.jpg
+!storage/media/bigger_image.jpg
+
+
+# // exclude temporary files ///////////////////////////////////////////////////
+.php_cs.cache
+.phpunit.result.cache
+Homestead.json
+Homestead.yaml
+npm-debug.log
+yarn-error.log
+/.tmp
+
+docker-compose.*.yml
+/db.sql
+
+# // rsync logs
+.rsync*.log
+
+report.*.json
+
+storage/framework/laravel-excel
+bin/*
+!bin/simple-deploy.sh
+!bin/composer-sail
+.php-cs-fixer.cache
+.phpstorm.meta.php
+_ide_helper.php
+storage/clockwork/*
+!storage/clockwork/.gitkeep
+public/vendor/telescope/*
+public/css/*
+!public/css/landing
+public/js/*
+!public/js/landing
+public/build/*
+storage/backup
+frontend/*
+!frontend/.gitkeep
+auth.json
+
+.DS_Store

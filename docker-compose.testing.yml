@@ -1,0 +1,17 @@
+version: '3.11'
+services:
+  api:
+    env_file: ./.env.testing
+    build:
+      dockerfile: Dockerfile
+      target: api-php-testing
+      cache_from:
+        - '${DOCKER_IMAGE_PREFIX}/api:latest'
+      # noinspection ComposeUnknownKeys
+      tags: []
+    image: '${DOCKER_IMAGE_PREFIX}/api:${GIT_CURRENT_COMMIT_ID}'
+    volumes:
+      - './src/api/.reports:/var/www/html/.reports'
+    depends_on:
+      pgsql:
+        condition: service_healthy

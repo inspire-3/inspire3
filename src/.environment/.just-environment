@@ -1,0 +1,153 @@
+#!/usr/bin/env bash
+set -e
+
+CLEANUP_LIST_FILE="${CLEANUP_LIST_FILE:-.cleanup-list}"
+environments=("base" "local" "pr" "staging" "production" "testing")
+
+env_action="${1}"
+[[ $# -gt 0 ]] && shift 1
+
+case ${env_action} in
+    backup)
+        if [[ "$IS_CI" == 'true' ]]; then
+            exit 0
+        fi
+
+        env_file="${1:-.env}"
+        env_backup_dir=.tmp/env.bak
+        mkdir -p "${env_backup_dir}"
+        backup_target="${env_backup_dir}/$(date "+%Y%m%d%H%M%S")${env_file}"
+        if [[ -f "${env_file}" ]]; then
+            cp -f "${env_file}" "${backup_target}"
+            show_info "Backup created for '${env_file}' -> '$backup_target'"
+        else
+            show_warning "Couldn't backup '${env_file}', reason file not found"
+        fi
+    ;;
+    activate:local|activate-local)
+        show_command_title '[environment]' "activate 'local' environment"
+        HIDE_PROJECT_TITLE=true HIDE_COMMAND_TITLE=true just env decrypt local
+        HIDE_PROJECT_TITLE=true HIDE_COMMAND_TITLE=true just env activate local
+    ;;
+    encrypt:all|encrypt-all)
+        show_command_title '[environment]' "encrypt [${environments[@]}] environment definitions"
+        for environment in "${environments[@]}"
+        do
+            HIDE_PROJECT_TITLE=true HIDE_COMMAND_TITLE=true just env encrypt $environment
+        done
+    ;;
+    decrypt:all|decrypt-all)
+        show_command_title '[environment]' "decrypt [${environments[@]}] environment definitions"
+        for environment in "${environments[@]}"
+        do
+            HIDE_PROJECT_TITLE=true HIDE_COMMAND_TITLE=true just env decrypt $environment
+        done
+    ;;
+    version:create)
+        ensure_jq_is_present
+        SED_COMMAND="$(resolve_sed_command)"
+
+        version_template_filename='version.template.json'
+        version_filename='__version.json'
+        target_directory="${1:-null}"
+        target_version_file="${target_directory}/${version_filename}"
+        commit="${2:-null}"
+        image="${3:-null}"
+
+        if [[ "${target_directory:-null}" == "null" && ! -d "${target_directory}" ]]; then
+            show_error "could not resolve '${target_directory}' target directory"
+            exit 1
+        fi
+
+        [[ -f "${version_filename}" ]] && rm -f "${version_filename}"
+        [[ -f "${target_version_file}" ]] && rm -f "${target_version_file}"
+
+        cat "${version_template_filename}" \
+            | jq -r --arg commit "$commit" '.commit |= $commit' \
+            | jq -r --arg image "${image}" '.image |= $image' \
+            > ${target_version_file}
+
+        [[ "${QUIET:-false}" == 'true' ]] && return 0
+        show_info "'${target_version_file}' created"
+
+        [[ "${VERBOSE:-false}" == 'false' ]] && return 0
+        cat "${target_version_file}"
+        echo
+    ;;
+    version:ensure-presence)
+        ensure_jq_is_present
+        commit="${1:-null}"
+        image="${2:-null}"
+        versions_to_distribute="${VERSIONS_TO_DISTRIBUTE:-'[]'}"
+
+        for version_target in $(echo ${versions_to_distribute} | jq -r '.[]'); do
+             HIDE_PROJECT_TITLE=true HIDE_COMMAND_TITLE=true just env version:create \
+                "src/${version_target}" "${commit}" "${image}"
+        done
+    ;;
+    image)
+        action="${1}"
+        shift 1
+        image_build_and_push_command ${action} 'environment' "$@"
+    ;;
+    cleanup:add)
+        file_to_be_removed="${1}"
+        [[ ! -f "${CLEANUP_LIST_FILE}" ]] && touch "${CLEANUP_LIST_FILE}"
+        echo "${file_to_be_removed}" >> "${CLEANUP_LIST_FILE}"
+    ;;
+    cleanup:show)
+        if [[ ! -f "${CLEANUP_LIST_FILE}" ]]; then
+            show_warning "'${CLEANUP_LIST_FILE}' does not exist"
+            return 0
+        fi
+        [[ "${VERBOSE:-false}" == 'true' ]] && show_info "print cleanup file list"
+        cat "${CLEANUP_LIST_FILE}"
+    ;;
+    cleanup:run)
+        if [[ ! -f "${CLEANUP_LIST_FILE}" ]]; then
+            show_warning "Could not find '${CLEANUP_LIST_FILE}' cleanup file"
+            exit 0
+        fi
+
+        for file_to_be_removed in $(cat "${CLEANUP_LIST_FILE}"); do
+            if [[ -f "${file_to_be_removed}" ]]; then
+                rm -f "${file_to_be_removed}"
+            fi
+        done
+
+        if [[ -f "${CLEANUP_LIST_FILE}" ]]; then
+            rm -f "${CLEANUP_LIST_FILE}"
+        fi
+    ;;
+    # @todo implement 'code:style|code:style:fix|code:analyse|code:analyse:fix)'
+    *)
+        show_command_title '[environment]' "manage environment files"
+
+        case "${env_action}" in
+            activate|decrypt)
+                if [[ -f ".env.${1}" ]]; then
+                    HIDE_PROJECT_TITLE=true HIDE_COMMAND_TITLE=true just env backup ".env.${1}"
+                fi
+            ;;
+            *)
+            ;;
+        esac
+
+        [[ -n "${env_action}" ]]  \
+         && ${DOCKER_COMPOSE_EXECUTABLE} run --rm environment "${env_action}" "${@}" \
+         && exit $?
+
+        set +e
+        ${DOCKER_COMPOSE_EXECUTABLE} run --rm environment
+        set -e
+
+        echo "  activate:local|activate-local"
+        echo "  encrypt:all|encrypt-all"
+        echo "  decrypt:all|decrypt-all"
+        echo "  version:create <target_directory> <commit> <image>"
+        echo "  version:ensure-presence <commit> <image>"
+        echo "  cleanup:add"
+        echo "  cleanup:run"
+        echo
+    ;;
+esac

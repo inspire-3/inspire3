@@ -1,0 +1,14 @@
+# // global ignores //////////////////////////////////////////////////
+node_modules
+.git
+.idea
+dist
+*.svg
+*.ico
+.gitignore
+.tmp
+package.json
+
+# // api-spec ////////////////////////////////////////////////////////
+src/assets/styles.min.css
+src/assets/web-components.min.js

@@ -1,0 +1,24 @@
+version: '3.11'
+
+x-api-build-and-image-production: &api_build_and_image_production
+  build:
+    dockerfile: Dockerfile
+    target: api-php-production
+  image: '${DOCKER_IMAGE_PREFIX}/api:${GIT_CURRENT_COMMIT_ID}'
+
+services:
+  frontend:
+    build:
+      dockerfile: Dockerfile
+      target: frontend-production
+    image: '${DOCKER_IMAGE_PREFIX}/frontend:${GIT_CURRENT_COMMIT_ID}'
+
+  api:
+    <<: *api_build_and_image_production
+
+  api-queue:
+    <<: *api_build_and_image_production
+
+  api-schedule:
+    <<: *api_build_and_image_production
+

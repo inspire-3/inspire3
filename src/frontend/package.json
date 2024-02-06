@@ -1,0 +1,42 @@
+{
+  "name": "inspire3-frontend",
+  "type": "module",
+  "version": "0.0.1",
+  "engines": {
+    "node": ">=18.17.0 <19.0.0"
+  },
+  "scripts": {
+    "code:analyse": "echo \"⚠️ NOT IMPLEMENTED ⚠️ 'yarn code:analyse:eslint'\"",
+    "code:analyse:fix": "echo \"⚠️ NOT IMPLEMENTED ⚠️ 'eslint --ext .js --ext .vue --ext .yaml --ext .yml --ext .ts --ext .json --ignore-path .eslintignore . --fix'\"",
+    "code:analyse:eslint": "echo \"⚠️ NOT IMPLEMENTED ⚠️ 'eslint --ext .js --ext .vue --ext .yaml --ext .yml --ext .ts --ext .json --ignore-path .eslintignore .'\"",
+    "code:style": "echo \"⚠️ NOT IMPLEMENTED ⚠️ 'yarn prettier --ignore-path=.eslintignore --list-different \"**/*.{js,mjs,ts,tsx,json,css,vue,md,yml,yaml}\"'\"",
+    "code:style:fix": "echo \"⚠️ NOT IMPLEMENTED ⚠️ 'yarn prettier --ignore-path=.eslintignore --write \"**/*.{js,mjs,ts,tsx,json,css,vue,md,yml,yaml}\"'\"",
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "astro check && astro build",
+    "preview": "astro preview",
+    "astro": "astro",
+    "setup": "yarn install --frozen-lockfile",
+    "project:info": "echo '⚠️  \"frontend\"'"
+  },
+  "dependencies": {
+    "@astrojs/check": "^0.4.1",
+    "@astrojs/tailwind": "^5.1.0",
+    "@astrojs/vue": "^4.0.8",
+    "astro": "^4.3.2",
+    "@astrojs/mdx": "^1.1.5",
+    "@astrojs/rss": "^4.0.5",
+    "@astrojs/sitemap": "^3.0.5",
+    "typescript": "^5.3.3",
+    "@junobuild/core": "^0.0.43",
+    "vue": "^3.4.15",
+    "tailwindcss": "^3.4.1",
+    "@tailwindcss/typography": "^0.5.10"
+  },
+  "devDependencies": {
+    "daisyui": "^4.6.2",
+    "@junobuild/vite-plugin": "^0.0.6",
+    "prettier": "^3.2.5",
+    "prettier-plugin-astro": "^0.13.0"
+  }
+}

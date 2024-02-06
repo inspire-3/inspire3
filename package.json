@@ -1,0 +1,44 @@
+{
+    "name": "project-root",
+    "version": "0.0.1",
+    "private": true,
+    "license": "MIT",
+    "project": {
+        "isRoot": true
+    },
+    "engines": {
+        "node": ">=18.17.0 <19.0.0"
+    },
+    "scripts": {
+        "code:style": "prettier --ignore-path=.eslintignore --list-different \"*.{js,ts,tsx,json,css,vue,md,yml,yaml}\" && prettier --ignore-path=.eslintignore --list-different \".github/**/*.{js,ts,tsx,json,css,vue,md,yml,yaml}\"",
+        "code:style:fix": "prettier --ignore-path=.eslintignore --write \"*.{js,ts,tsx,json,css,vue,md,yml,yaml}\" && prettier --ignore-path=.eslintignore --write \".github/**/*.{js,ts,tsx,json,css,vue,md,yml,yaml}\"",
+        "code:analyse": "eslint --ext .js --ext .yaml --ext .yml --ext .ts --ext .json --ignore-path .eslintignore \"*.{js,ts,json,md,yml,yaml}\"",
+        "code:analyse:fix": "eslint --ext .js --ext .yaml --ext .yml --ext .ts --ext .json --ignore-path .eslintignore \"*.{js,ts,json,md,yml,yaml}\" --fix",
+        "commit": "cz",
+        "postinstall": "test -n \"$NO_YARN_POST_INSTALL\" || if [ -n \"${HUSKY}\" ] && [ \"${HUSKY}\" -eq 0 ]; then echo 'INFO: skip husky for ci/cd' ; else husky install; fi",
+        "project:info": "echo '⚠️  \"root\"'"
+    },
+    "devDependencies": {
+        "@commitlint/cli": "^17.7.1",
+        "@commitlint/config-conventional": "^17.7.0",
+        "@typescript-eslint/eslint-plugin": "^6.4.1",
+        "@typescript-eslint/parser": "^6.4.1",
+        "eslint": "^8.48.0",
+        "eslint-config-prettier": "^9.0.0",
+        "eslint-plugin-json": "^3.1.0",
+        "eslint-plugin-markdown": "^3.0.1",
+        "eslint-plugin-markdownlint": "^0.5.0",
+        "eslint-plugin-prettier": "^5.0.0",
+        "eslint-plugin-yaml": "^0.5.0",
+        "husky": "^8.0.3",
+        "prettier": "^3.0.2",
+        "prettier-plugin-tailwindcss": "^0.5.3",
+        "typescript": "^5.2.2"
+    },
+    "config": {
+        "commitizen": {
+            "path": "./node_modules/cz-conventional-changelog"
+        }
+    },
+    "dependencies": {}
+}

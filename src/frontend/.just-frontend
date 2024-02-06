@@ -1,0 +1,37 @@
+#!/usr/bin/env bash
+set -e
+
+show_command_title "${FRONTEND_SUBPROJECT_NAME}" "${FRONTEND_SUBPROJECT_LOCATION}" "${@}"
+
+frontend_action="${1}"
+[[ $# -gt 0 ]] && shift 1
+
+case ${frontend_action} in
+  setup)
+    (
+      HIDE_PROJECT_TITLE=true \
+        COMPOSE_FILE=docker-compose.tooling.yml:docker-compose.base.yml:docker-compose.base-id.yml \
+        IS_CI='true' \
+        just ${FRONTEND_SUBPROJECT_NAME} image build
+    )
+    echo "just ${FRONTEND_SUBPROJECT_NAME} image build"
+
+    HIDE_PROJECT_TITLE=true HIDE_COMMAND_TITLE=true \
+      just ${FRONTEND_SUBPROJECT_NAME} yarn install --frozen-lockfile
+  ;;
+  bash|shell)
+    ${DOCKER_COMPOSE_EXECUTABLE} run --rm frontend bash "$@"
+  ;;
+  code:analyse|code:analyse:fix|code:style|code:style:fix)
+    ${DOCKER_COMPOSE_EXECUTABLE} run --rm -T frontend yarn "$frontend_action" "$@"
+  ;;
+  image)
+    image_build_and_push_command ${1} ${FRONTEND_SUBPROJECT_NAME}
+  ;;
+  yarn)
+    ${DOCKER_COMPOSE_EXECUTABLE} run --rm frontend "${frontend_action}" "$@"
+  ;;
+  *)
+    ${DOCKER_COMPOSE_EXECUTABLE} run --rm frontend "${frontend_action}" "$@"
+  ;;
+esac

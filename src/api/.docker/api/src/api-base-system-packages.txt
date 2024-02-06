@@ -1,0 +1,16 @@
+git-core
+zip
+unzip
+rsync
+sqlite3
+gosu
+libcap2-bin
+libpng-dev
+python2
+dnsutils
+librsvg2-bin
+fswatch
+mysql-client
+postgresql-client-15
+unit
+unit-php

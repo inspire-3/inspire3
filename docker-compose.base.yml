@@ -1,0 +1,99 @@
+version: '3.11'
+
+x-api-build-and-image: &api_build_and_image
+  build:
+    args:
+      DOCKER_IMAGE_PREFIX: ${DOCKER_IMAGE_PREFIX}
+      DOCKER_IMAGE_BASE_VERSION: '${DOCKER_IMAGE_BASE_VERSION:-base-latest}'
+    context: ./src/api/.docker/api
+    # noinspection ComposeUnknownKeys
+    additional_contexts:
+      - api-sources=./src/api
+    dockerfile: Dockerfile-full-base
+    cache_from:
+      - ${DOCKER_IMAGE_PREFIX}/api:base-latest
+  image: ${DOCKER_IMAGE_PREFIX}/api:base-latest
+
+services:
+  frontend:
+    build:
+      args:
+        DOCKER_IMAGE_PREFIX: ${DOCKER_IMAGE_PREFIX}
+        DOCKER_IMAGE_BASE_VERSION: ${DOCKER_IMAGE_BASE_VERSION:-base-latest}
+      context: ./src/frontend/.docker
+      # noinspection ComposeUnknownKeys
+      additional_contexts:
+        - frontend-sources=./src/frontend
+      dockerfile: Dockerfile-base
+      cache_from:
+        - ${DOCKER_IMAGE_PREFIX}/frontend:base-latest
+    image: ${DOCKER_IMAGE_PREFIX}/frontend:base-latest
+    environment:
+      USERID: '${USERID}'
+    ports:
+      - '4321:4321'
+    networks:
+      - inspire3
+    depends_on: []
+    tty: true
+
+  api:
+    <<: *api_build_and_image
+    environment:
+      USERID: '${USERID}'
+      LOG_CHANNEL: '${LOG_CHANNEL:-stack}'
+    ports:
+      - '${APP_PORT:-80}:80'
+    networks:
+      - inspire3
+
+  api-queue:
+    <<: *api_build_and_image
+    environment:
+      USERID: '${USERID}'
+    command: /usr/bin/php artisan queue:work-when-db-is-ready
+    networks:
+      - inspire3
+
+  api-schedule:
+    <<: *api_build_and_image
+    environment:
+      USERID: '${USERID}'
+    command: /usr/bin/php artisan schedule:work-when-db-is-ready
+    networks:
+      - inspire3
+
+  pgsql:
+      image: 'pgvector/pgvector:pg15'
+      ports:
+          - '${DB_PORT:-5432}:${DB_PORT:-5432}'
+      environment:
+          PGPASSWORD: '${DB_PASSWORD}'
+          POSTGRES_DB: '${DB_DATABASE}'
+          POSTGRES_USER: '${DB_USERNAME}'
+          POSTGRES_PASSWORD: '${DB_PASSWORD}'
+      volumes:
+          - 'inspire3-pgsql:/var/lib/postgresql/data'
+          - './src/api/.docker/pgsql/create-testing-database.sql:/docker-entrypoint-initdb.d/10-create-testing-database.sql'
+      networks:
+          - inspire3
+      healthcheck:
+          test: ["CMD", "pg_isready", "-q", "-d", "${DB_DATABASE}", "-U", "${DB_USERNAME}"]
+          retries: 3
+          timeout: 5s
+
+  mailpit:
+    image: 'axllent/mailpit:latest'
+    ports:
+      - '${FORWARD_MAILPIT_PORT:-1025}:1025'
+      - '${FORWARD_MAILPIT_DASHBOARD_PORT:-8025}:8025'
+    networks:
+      - inspire3
+
+networks:
+  inspire3:
+    driver: bridge
+
+volumes:
+  inspire3-pgsql:
+    driver: local

@@ -1,0 +1,18 @@
+# // global ignores //////////////////////////////////////////////////
+node_modules
+.idea
+yarn-error.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+.env
+.env.*
+!.env.template
+
+# // frontend ////////////////////////////////////////////////////////
+# build output
+dist/
+# generated types
+.astro/

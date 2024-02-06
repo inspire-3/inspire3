@@ -1,0 +1,34 @@
+{
+  "satellite": {
+    "collections": {
+      "db": [
+        {
+          "collection": "metadata",
+          "read": "managed",
+          "write": "managed",
+          "memory": "stable"
+        },
+        {
+          "collection": "counter",
+          "read": "managed",
+          "write": "managed",
+          "memory": "stable"
+        }
+      ],
+      "storage": [
+        {
+          "collection": "content",
+          "read": "public",
+          "write": "public",
+          "memory": "stable"
+        }
+      ]
+    },
+    "controllers": [
+      {
+        "id": "535yc-uxytb-gfk7h-tny7p-vjkoe-i4krp-3qmcl-uqfgr-cpgej-yqtjq-rqe",
+        "scope": "admin"
+      }
+    ]
+  }
+}
