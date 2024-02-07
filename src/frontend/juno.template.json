@@ -1,0 +1,19 @@
+{
+  "satellite": {
+    "satelliteId": "__JUNO_SATELLITE_ID__",
+    "source": "dist",
+    "storage": {
+      "headers": [
+        {
+          "source": "**/*.jpg",
+          "headers": [
+            ["Cache-Control", "max-age=31536000"],
+            ["Access-Control-Allow-Origin", "*"]
+          ]
+        }
+      ],
+      "redirects": [],
+      "rewrites": []
+    }
+  }
+}
