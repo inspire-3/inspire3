@@ -7,18 +7,6 @@ ARG DOCKER_IMAGE_BASE_VERSION
 FROM ${DOCKER_IMAGE_PREFIX}/frontend:${DOCKER_IMAGE_BASE_VERSION:-base-latest} as frontend-local
 
 # /////////////////////////////////////////////////////////////////////
-# frontend-builder
-FROM ${DOCKER_IMAGE_PREFIX}/frontend:${DOCKER_IMAGE_BASE_VERSION:-base-latest} as frontend-builder
-
-WORKDIR /var/www/html
-RUN chown -R www-data:www-data /var/www \
-    && chmod -R ug+rwx /var/www
-
-COPY --from=frontend-sources --chown=www-data:www-data . ./
-RUN yarn install --frozen-lockfile
-RUN chown -R www-data:www-data ./src
-
-# /////////////////////////////////////////////////////////////////////
 # frontend-production
 FROM ${DOCKER_IMAGE_PREFIX}/frontend:${DOCKER_IMAGE_BASE_VERSION:-base-latest} as frontend-production
 
@@ -26,4 +14,7 @@ WORKDIR /var/www/html
 RUN chown -R www-data:www-data /var/www \
     && chmod -R ug+rwx /var/www
 
-COPY --from=frontend-builder --chown=www-data:www-data /var/www/html /var/www/html
+COPY --from=frontend-sources --chown=www-data:www-data . ./
+RUN yarn install --frozen-lockfile
+RUN chown -R cuser:www-data /var/www \
+    && chmod -R ug+rwx /var/www

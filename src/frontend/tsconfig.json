@@ -1,7 +1,10 @@
 {
-    "extends": "astro/tsconfigs/strict",
-    "compilerOptions": {
-        "jsx": "preserve",
-        "strictNullChecks": true
-    }
+  "extends": "astro/tsconfigs/strict",
+  "compilerOptions": {
+    "jsx": "preserve",
+    "strictNullChecks": true
+  },
+  "exclude": [
+    "dist"
+  ]
 }

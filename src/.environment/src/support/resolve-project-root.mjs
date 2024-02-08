@@ -1,7 +1,7 @@
 import path from 'path'
 import fs from 'fs'
 import get from 'lodash.get'
-import { readFile } from 'fs/promises';
+import { readFile } from 'fs/promises'
 
 export const ROOT_INDICATOR_FILE_NAME = 'package.json'
 export const isRoot = async (pathSegments = [], packageJsonKeyPath = 'project.isRoot') => {
@@ -19,6 +19,10 @@ export const isRoot = async (pathSegments = [], packageJsonKeyPath = 'project.is
 }
 
 export const resolveRootPath = async (initialCurrentPath, packageJsonKeyPath = 'project.isRoot') => {
+  if ((process.env.ENVIRONMENT_PATH_DEBUG ?? 'false') === 'true') {
+    console.log('⚠️', 'resolveRootPath', 'process.cwd()', process.cwd())
+  }
+
   if (!initialCurrentPath) {
     throw new Error(`'initialCurrentPath' is missing but required`)
   }
@@ -29,6 +33,9 @@ export const resolveRootPath = async (initialCurrentPath, packageJsonKeyPath = '
 
   const pathSegments = initialCurrentPath.split(path.sep)
   while (pathSegments.length > 0) {
+    if ((process.env.ENVIRONMENT_PATH_DEBUG ?? 'false') === 'true') {
+      console.log('⚠️', 'resolveRootPath', 'while', pathSegments.length, pathSegments)
+    }
     if (await isRoot(pathSegments, packageJsonKeyPath)) {
       return pathSegments.join(path.sep)
     }

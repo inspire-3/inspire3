@@ -30,6 +30,11 @@ services:
     image: ${DOCKER_IMAGE_PREFIX}/frontend:base-latest
     environment:
       USERID: '${USERID}'
+      APP_ENV: '${APP_ENV}'
+      JUNO_TOKEN: '${JUNO_TOKEN}'
+      JUNO_SATELLITE_ID: '${JUNO_SATELLITE_ID}'
+      JUNO_SATELLITE_URL: '${JUNO_SATELLITE_URL}'
+      JUNO_CONTROLLER_ID: '${JUNO_CONTROLLER_ID}'
     ports:
       - '4321:4321'
     networks:

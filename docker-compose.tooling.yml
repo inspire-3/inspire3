@@ -16,8 +16,9 @@ services:
     environment:
       USERID: '${USERID}'
       ENVIRONMENT_ENCRYPTION_KEY: "${ENVIRONMENT_ENCRYPTION_KEY:-''}"
+      ENVIRONMENT_PATH_DEBUG: "${ENVIRONMENT_PATH_DEBUG:-false}"
     volumes:
-      - '.:/var/www/html'
+      - '${DIRENV_PROJECT_ROOT:-.}:/var/www/html'
   root:
     build:
       context: src/.root/.docker

@@ -28,7 +28,7 @@ services:
       - 5987:5987
     volumes:
       - juno_satellite:/juno/.juno
-      - ./src/frontend/juno.local.json:/juno/juno.dev.json
+      - ./src/frontend/juno.collections.local.json:/juno/juno.dev.json
 
   api:
     <<: *api_build_and_image_local
