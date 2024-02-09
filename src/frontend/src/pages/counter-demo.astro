@@ -1,0 +1,125 @@
+---
+import { authSubscribe, getDoc, initJuno, setDoc, signIn, signOut } from '@junobuild/core'
+---
+<div class="flex justify-center pt-6 space-x-2">
+        <button id="login" class="btn btn-primary">Sign-in</button>
+        <button id="logout" class="btn btn-secondary">Sign-out</button>
+        <button id="count" class="btn btn-neutral">Count</button>
+    </div>
+
+    <div class="flex justify-center mt-3">
+        <h2 id="result"></h2>
+    </div>
+
+    <script>
+        // @ts-nocheck
+
+        import {
+            initJuno,
+            setDoc,
+            authSubscribe,
+            signIn,
+            signOut,
+            getDoc,
+        } from '@junobuild/core'
+            // noinspection TypeScriptUnresolvedReference
+            console.log('🤖', {
+            environment: `${import.meta.env.APP_ENV}`,
+            satelliteId: import.meta.env.PUBLIC_SATELLITE_ID,
+            container: import.meta.env.PUBLIC_CONTAINER,
+        })
+
+        // Initialize Juno
+        document.addEventListener(
+            'DOMContentLoaded',
+            async () => {
+                await initJuno({
+                    satelliteId: import.meta.env.PUBLIC_SATELLITE_ID,
+                    container: import.meta.env.PUBLIC_CONTAINER,
+                })
+            },
+            { once: true },
+        )
+
+        let user = undefined
+
+        authSubscribe((u) => {
+            user = u
+
+            document.querySelector('#login').style.display =
+                user === null ? 'block' : 'none'
+            document.querySelector('#logout').style.display =
+                user !== undefined && user !== null ? 'block' : 'none'
+            document.querySelector('#count').style.display =
+                user !== undefined && user !== null ? 'block' : 'none'
+            document.querySelector('#result').style.display =
+                user !== undefined && user !== null ? 'block' : 'none'
+        })
+
+        let counter = undefined
+        authSubscribe(async (user) => {
+            if (user === null) {
+                counter = undefined
+                return
+            }
+
+            counter = await getDoc({
+                collection: 'counter',
+                key: user.key,
+            })
+
+            displayCounter()
+        })
+
+        const displayCounter = () => {
+            const result = document.querySelector('#result')
+            if (result !== null) {
+                result.textContent = counter?.data.counter ?? 0
+            }
+        }
+
+        // Insert a document in Juno's datastore
+        const count = async () => {
+            if (!user) {
+                console.error('Ummm this is unexpected, you are not signed in...')
+                return
+            }
+
+            const count = document.querySelector('#count') as HTMLElement
+            if (count !== null) {
+                count.disabled = true
+            }
+
+            try {
+                counter = await setDoc({
+                    collection: 'counter',
+                    doc: {
+                        ...(counter !== undefined && counter),
+                        key: user.key,
+                        data: {
+                            counter: (counter?.data.counter ?? 0) + 1,
+                        },
+                    },
+                })
+
+                displayCounter()
+            } catch (err) {
+                console.error(err)
+            }
+
+            if (count !== null) {
+                count.disabled = false
+            }
+        }
+
+        document
+            .querySelector('#count')
+            ?.addEventListener('click', count, { passive: true })
+
+        document
+            .querySelector('#login')
+            ?.addEventListener('click', signIn, { passive: true })
+        document
+            .querySelector('#logout')
+            ?.addEventListener('click', signOut, { passive: true })
+    </script>

@@ -1,0 +1,87 @@
+@font-face {
+    font-display: swap;
+    font-family: 'Poppins';
+    font-style: normal;
+    font-weight: 400;
+    src: url('/fonts/poppins-v20-latin-regular.woff2') format('woff2'),
+    url('/fonts/poppins-v20-latin-regular.woff') format('woff');
+}
+
+@font-face {
+    font-display: swap;
+    font-family: 'Poppins';
+    font-style: italic;
+    font-weight: 400;
+    src: url('/fonts/poppins-v20-latin-italic.woff2') format('woff2'),
+    url('/fonts/poppins-v20-latin-italic.woff') format('woff');
+}
+
+@font-face {
+    font-display: swap;
+    font-family: 'Poppins';
+    font-style: normal;
+    font-weight: 600;
+    src: url('/fonts/poppins-v20-latin-600.woff2') format('woff2'),
+    url('/fonts/poppins-v20-latin-600.woff') format('woff');
+}
+
+@font-face {
+    font-display: swap;
+    font-family: 'Poppins';
+    font-style: italic;
+    font-weight: 600;
+    src: url('/fonts/poppins-v20-latin-600italic.woff2') format('woff2'),
+    url('/fonts/poppins-v20-latin-600italic.woff') format('woff');
+}
+
+@font-face {
+    font-display: swap;
+    font-family: 'Poppins';
+    font-style: normal;
+    font-weight: 700;
+    src: url('/fonts/poppins-v20-latin-700.woff2') format('woff2'),
+    url('/fonts/poppins-v20-latin-700.woff') format('woff');
+}
+
+@font-face {
+    font-display: swap;
+    font-family: 'Poppins';
+    font-style: italic;
+    font-weight: 700;
+    src: url('/fonts/poppins-v20-latin-700italic.woff2') format('woff2'),
+    url('/fonts/poppins-v20-latin-700italic.woff') format('woff');
+}
+
+@font-face {
+    font-family: 'Open Sauce Sans';
+    src: url('/fonts/opensaucesans-light-webfont.woff2') format('woff2'),
+         url('/fonts/opensaucesans-light-webfont.woff') format('woff');
+    font-weight: 300;
+    font-style: normal;
+
+}
+
+@font-face {
+    font-family: 'Open Sauce Sans';
+    src: url('/fonts/opensaucesans-lightitalic-webfont.woff2') format('woff2'),
+         url('/fonts/opensaucesans-lightitalic-webfont.woff') format('woff');
+    font-weight: 300;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'Open Sauce Sans';
+    src: url('/fonts/opensaucesans-bold-webfont.woff2') format('woff2'),
+         url('/fonts/opensaucesans-bold-webfont.woff') format('woff');
+    font-weight: 700;
+    font-style: normal;
+
+}
+@font-face {
+    font-family: 'Open Sauce Sans';
+    src: url('/fonts/opensaucesans-bolditalic-webfont.woff2') format('woff2'),
+         url('/fonts/opensaucesans-bolditalic-webfont.woff') format('woff');
+    font-weight: 700;
+    font-style: italic;
+
+}
