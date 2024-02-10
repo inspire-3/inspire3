@@ -9,7 +9,7 @@ export type AnonWritableCollection = "test";
 export type WritableCollection = AnonWritableCollection | "user_account" | "read_status" | "hidden_status" | "topics" | "test";
 
 // TODO: delete the next line and the dummy values for wip testing
-const DELETEME = true;
+const DELETEME = false;
 const SATELITE_ID = DELETEME ? "qt5bo-kqaaa-aaaal-adrwa-cai" : import.meta.env.PUBLIC_SATELLITE_ID;
 const IS_IN_JUNO_CONTAINER = DELETEME ? false : import.meta.env.DEV
 
