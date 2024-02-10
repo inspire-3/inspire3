@@ -1,8 +1,13 @@
 /** @type {import('tailwindcss').Config} */
 export default {
-  content: ['./src/**/*.{astro,html,js,jsx,md,mdx,svelte,ts,tsx,vue}'],
+  content: [
+    './src/**/*.{astro,html,js,jsx,md,mdx,svelte,ts,tsx,vue}'
+  ],
   theme: {
     extend: {
+      maxWidth: {
+        '256': '64rem',
+      },
       container: {
         center: true,
         padding: {
@@ -15,13 +20,16 @@ export default {
       },
       fontFamily: {
         poppins: ['Poppins', 'sans-serif'],
-        sauce: ['Open Sauce Sans', 'sans-serif']
+        sauce: ['Open Sauce Sans', 'sans-serif'],
+      },
+      spacing: {
+        '256': '64rm',
       },
     },
   },
   plugins: [
     require('@tailwindcss/typography'),
-    require('daisyui')
+    require('daisyui'),
   ],
   daisyui: {
     themes: ['acid'], // false: only light + dark | true: all themes | array: specific themes like this ["light", "dark", "cupcake"]

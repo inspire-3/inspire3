@@ -12,6 +12,7 @@
 }
 
 .btn-slim {
-    min-height: 2.25rem;
-    height: 2.25rem;
+    min-height: 1.75rem !important;
+    height: 1.75rem !important;
+    /*line-height: 0.5;*/
 }

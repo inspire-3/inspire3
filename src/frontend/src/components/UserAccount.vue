@@ -1,15 +1,19 @@
 <template>
-    <button v-if="!isSignedIn" class="btn btn-slim btn-primary text-white mr-3" @click="login">
+    <button v-if="!isSignedIn"
+            type="button"
+            class="rounded-full px-4 min-h-[36px] w-28
+                font-poppins font-normal text-primary/50 shadow-sm hover:bg-primary/50 hover:text-primary-content border border-primary/50 hover:border-primary
+                focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary text-base
+            ">
         Sign In
     </button>
 
-    <div v-if="isSignedIn" class="dropdown dropdown-end mr-2" :class="[componentName]">
+    <div v-if="isSignedIn"
+         class="dropdown dropdown-end mr-2" :class="[componentName]">
         <div tabindex="0" role="button" class="flex avatar pl-4 pr-0">
-            <div class="w-6 lg:w-10 rounded-full">
-                <img src="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg" />
-            </div>
+            <Avatar :fullname="username" :classes="['w-7','h-7' ,'lg:w-10', 'lg:h-10']" />
         </div>
-        <ul tabindex="0" class="dropdown-content z-[1] menu mt-2 p-2 shadow bg-base-100 rounded-box w-52">
+        <ul tabindex="0" class="dropdown-content z-[1] menu mt-2 p-2 shadow bg-base-100 rounded-3xl w-52">
             <li v-if="account" class="menu-title">ProxyIdentities</li>
             <li v-for="piid in account?.data.piids">
                 <div v-if="editPiid?.piid !== piid.piid" class="flex">
@@ -48,26 +52,26 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
-import { authSubscribe, getDoc, init, login, logout, setDoc } from '../junoHelper';
-import type { Doc, User } from '@junobuild/core';
+import { defineComponent } from 'vue'
+import { authSubscribe, getDoc, init, login, logout, setDoc } from '../junoHelper'
+import type { Doc, User } from '@junobuild/core'
 import type { IUserAccount } from '../contracts/IUserAccount'
 import type { INamedProxyIdentity, IProxyIdentity } from '../contracts/IProxyIdentity'
 import { urlAlphabet, customAlphabet } from 'nanoid'
 const nanoid = customAlphabet(urlAlphabet, 32);
 import { useStore } from '@nanostores/vue'
-import { deepMap } from 'nanostores';
-
-
+import { deepMap } from 'nanostores'
 
 export const componentName = 'UserAccount'
 export default defineComponent({
     name: componentName,
-});
+})
 </script>
 
 <script lang="ts" setup>
-import { ref } from 'vue';
+import Avatar from './Avatar.vue'
+import { ref } from 'vue'
+
 const isSignedIn = ref(false);
 const user = ref<null | User>(null);
 const account = ref<Doc<IUserAccount> | null>(null);
@@ -164,5 +168,4 @@ authSubscribe((u) => {
 const isActive = (piid: IProxyIdentity, active: IProxyIdentity | null): boolean => {
     return active?.piid === piid.piid;
 }
-
 </script>

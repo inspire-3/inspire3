@@ -2,9 +2,15 @@
 import { SITE_TITLE, SITE_DESCRIPTION } from '../consts'
 import DefaultLayout from '../layouts/DefaultLayout.astro'
 import Placeholder from '../components/Placeholder.astro'
+import OmniSearch from '../components/OmniSearch/OmniSearch.vue'
 ---
 
 <DefaultLayout siteTitle=`${SITE_TITLE}` siteDescription=`${SITE_DESCRIPTION}`>
     <Placeholder name="Hero" minHeight={500}></Placeholder>
+
+    <div class="max-w-[800px] mt-10 mb-12 px-2 sm:px-4 md:px-8 md:mx-auto">
+        <OmniSearch location="body" client:media="(max-width: 1023px)" />
+    </div>
+
     <Placeholder name="ContentListing" description="Lists collected content" minHeight={1200}></Placeholder>
 </DefaultLayout>

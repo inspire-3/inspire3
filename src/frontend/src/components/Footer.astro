@@ -3,7 +3,7 @@ import SocialLink from './SocialLink.astro'
 import { type IFooterLink } from '../contracts/IFooterLink.ts'
 const year = new Date().getFullYear()
 const projectName = 'inspire3'
-const copyrightLine = `&copy; ${year} <span class="hover:text-secondary">${projectName}</span>, Inc. All rights reserved.`
+const copyrightLine = `&copy; ${year} <span class="hover:text-secondary">${projectName}</span>`
 
 const links: IFooterLink[] = [
     {
@@ -31,7 +31,7 @@ const links: IFooterLink[] = [
                     <SocialLink footerLinkData={data} />)
             }
         </div>
-        <div class="mt-8 md:order-1 md:mt-0">
+        <div class="flex justify-center md:justify-start mt-4 md:order-1 md:mt-0">
             <a href="/"
                class="text-center font-poppins font-light text-sm leading-5 text-base-content hover:underline"
                set:html={copyrightLine}/>

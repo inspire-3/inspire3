@@ -168,7 +168,13 @@ case ${action} in
         ${DOCKER_COMPOSE_EXECUTABLE} ps --format "table {{.Service}}\t{{.Ports}}\t{{.Status}}"
     ;;
     logs)
-        ${DOCKER_COMPOSE_EXECUTABLE} logs "${@}"
+        tail='--tail 100'
+
+        if [[ "${NO_TAIL_LOG:-false}" == 'true' ]]; then
+            tail=''
+        fi
+
+        ${DOCKER_COMPOSE_EXECUTABLE} logs "--tail=50" "${@}"
     ;;
     setup)
         do_setup_action "$@"
