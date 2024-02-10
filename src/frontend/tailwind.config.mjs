@@ -14,7 +14,8 @@ export default {
         },
       },
       fontFamily: {
-        body: ['\'DM Sans\'', 'sans-serif'],
+        poppins: ['Poppins', 'sans-serif'],
+        sauce: ['Open Sauce Sans', 'sans-serif']
       },
     },
   },

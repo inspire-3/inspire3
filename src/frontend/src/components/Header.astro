@@ -1,61 +1,67 @@
 ---
-import HeaderLink from "./HeaderLink.astro";
-import { SITE_TITLE } from "../consts";
-import Social from "./Social.astro";
+import Placeholder from './Placeholder.astro'
+import UserAccount from './UserAccount.vue'
+
+const active = 'Home'
+const navigation = [
+    { name: 'Home', href: '#home' },
+    { name: 'Services', href: '#services' },
+    { name: 'Testimonial', href: '#testimonial' },
+    { name: 'Team', href: '#team' },
+    { name: 'Contact Us', href: '#contactus' },
+]
 ---
-
-<header>
-  <nav>
-    <h2><a href="/">{SITE_TITLE}</a></h2>
-    <div class="internal-links">
-      <HeaderLink href="/">Home</HeaderLink>
-      <HeaderLink href="/blog">Blog</HeaderLink>
-      <HeaderLink href="/about">About</HeaderLink>
+<div class="sticky top-0 z-50 flex justify-center py-4">
+    <div
+        class="navbar flex content-between mx-2 !px-0 sm:mx-4 md:mx-8 !min-h-[36px] rounded-full bg-base-100/90 py-0 shadow-2xl outline outline-base-content/5 backdrop-blur lg:max-w-256">
+        <div class="navbar-start pl-2">
+            <div class="dropdown">
+                <div tabindex={0} role="button" class="btn btn-slim btn-circle btn-ghost lg:hidden ">
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        class="h-5 w-5"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor">
+                        <path
+                            stroke-linecap="round"
+                            stroke-line-join="round"
+                            stroke-width="2"
+                            d="M4 6h16M4 12h8m-8 6h16"
+                        />
+                    </svg>
+                </div>
+                <ul class="menu dropdown-content menu-md z-[1] mt-3 w-52 gap-2 rounded-box bg-base-100 p-2 shadow">
+                    {navigation.map((item, index) => (
+                        <li data-key={index}>
+                            <a data-name={item.name} href={item.href} class="font-poppins">
+                                {item.name}
+                            </a>
+                        </li>
+                    ))}
+                </ul>
+            </div>
+            <a href="/" class="btn btn-slim btn-ghost rounded-full font-poppins text-lg font-semibold">
+                inspire3
+            </a>
+        </div>
+        <div class="navbar-center hidden lg:flex">
+            {navigation.map((item, index) => (
+                <nav data-key={index} class="menu menu-horizontal px-1">
+                    <a
+                        data-key={item.name}
+                        href={item.href}
+                        class={`btn btn-slim btn-ghost rounded-full font-poppins text-sm font-light ${
+                            active === item.name ? 'bg-base-300' : ''
+                        }`}
+                    >
+                        {item.name}
+                    </a>
+                </nav>
+            ))}
+        </div>
+        <div class="navbar-end">
+            <UserAccount client:load/>
+        </div>
     </div>
-    <div class="social-links">
-      <Social />
-    </div>
-  </nav>
-</header>
-<style>
-  header {
-    margin: 0;
-    padding: 0 1em;
-    background: white;
-    box-shadow: 0 2px 8px rgba(var(--black), 5%);
-  }
-  h2 {
-    margin: 0;
-    font-size: 1em;
-  }
-
-  h2 a,
-  h2 a.active {
-    text-decoration: none;
-  }
-  nav {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-  nav a {
-    padding: 1em 0.5em;
-    color: var(--black);
-    border-bottom: 4px solid transparent;
-    text-decoration: none;
-  }
-  nav a.active {
-    text-decoration: none;
-    border-bottom-color: var(--accent);
-  }
-
-  .social-links {
-    color: var(--black);
-  }
-
-  @media (max-width: 720px) {
-    .social-links {
-      display: none;
-    }
-  }
-</style>
+</div>

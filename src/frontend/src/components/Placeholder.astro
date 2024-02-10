@@ -1,0 +1,17 @@
+---
+interface Props {
+    name: string;
+    description?: string;
+    minHeight?: number;
+}
+
+const { name, description, minHeight= 0} = Astro.props
+---
+
+<div class={`stats shadow block bg-white my-4`} style={`min-height: ${minHeight}px;`}>
+    <div class="stat">
+        <div class="stat-title min-h-[24px]"></div>
+            <div class="stat-value">{name}</div>
+        <div class="stat-desc min-h-[16px]">{description}</div>
+    </div>
+</div>

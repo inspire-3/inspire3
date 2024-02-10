@@ -1,0 +1,16 @@
+---
+import BaseHead from '../../components/BaseHead.astro'
+import Header from '../../components/Header.astro'
+import Footer from '../../components/Footer.astro'
+import Placeholder from '../../components/Placeholder.astro'
+import { SITE_TITLE, SITE_DESCRIPTION } from '../../consts'
+import DefaultLayout from '../../layouts/DefaultLayout.astro'
+---
+
+<DefaultLayout siteTitle=`${SITE_TITLE}` siteDescription=`${SITE_DESCRIPTION}`>
+    <section>
+        <Placeholder name="OmniInput" />
+        <Placeholder name="ContentListing" minHeight={200} />
+        <Placeholder name="ContentListing" minHeight={1000} />
+    </section>
+</DefaultLayout>

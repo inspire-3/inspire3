@@ -1,32 +1,40 @@
 ---
-import Social from "./Social.astro";
-const today = new Date();
----
+import SocialLink from './SocialLink.astro'
+import { type IFooterLink } from '../contracts/IFooterLink.ts'
+const year = new Date().getFullYear()
+const projectName = 'inspire3'
+const copyrightLine = `&copy; ${year} <span class="hover:text-secondary">${projectName}</span>, Inc. All rights reserved.`
 
-<footer>
-  &copy; {today.getFullYear()} Your name here. All rights reserved.
-  <div class="social-links">
-    <Social />
-  </div>
+const links: IFooterLink[] = [
+    {
+        name: 'Discord',
+        url: 'https://discord.gg/SqncpMu6',
+        type: 'discord',
+    },
+    {
+        name: 'X',
+        url: 'https://twitter.com/inspire3_icp',
+        type: 'x',
+    },
+    {
+        name: 'GitHub',
+        url: 'https://github.com/inspire-3/inspire3',
+        type: 'github',
+    },
+]
+---
+<footer class="">
+    <div class="mx-auto max-w-xl px-6 py-4 md:flex md:items-center md:justify-between lg:px-8">
+        <div class="flex justify-center space-x-6 md:order-2">
+            {
+                links.map(data =>
+                    <SocialLink footerLinkData={data} />)
+            }
+        </div>
+        <div class="mt-8 md:order-1 md:mt-0">
+            <a href="/"
+               class="text-center font-poppins font-light text-sm leading-5 text-base-content hover:underline"
+               set:html={copyrightLine}/>
+        </div>
+    </div>
 </footer>
-<style>
-  footer {
-    padding: 2em 1em 6em 1em;
-    background: linear-gradient(var(--gray-gradient)) no-repeat;
-    color: rgb(var(--gray));
-    text-align: center;
-  }
-  .social-links {
-    display: flex;
-    justify-content: center;
-    gap: 1em;
-    margin-top: 1em;
-  }
-  .social-links a {
-    text-decoration: none;
-    color: rgb(var(--gray));
-  }
-  .social-links a:hover {
-    color: rgb(var(--gray-dark));
-  }
-</style>
