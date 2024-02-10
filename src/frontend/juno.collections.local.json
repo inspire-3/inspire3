@@ -3,23 +3,67 @@
     "collections": {
       "db": [
         {
-          "collection": "metadata",
+          "collection": "user_account",
+          "_comment": "TODO: change read/write to private/private",
           "read": "managed",
           "write": "managed",
           "memory": "stable"
         },
         {
-          "collection": "counter",
-          "read": "managed",
+          "collection": "read_status",
+          "read": "public",
           "write": "managed",
+          "memory": "stable"
+        },
+        {
+          "collection": "hidden_status",
+          "read": "public",
+          "write": "managed",
+          "memory": "stable"
+        },
+        {
+          "collection": "topics",
+          "read": "public",
+          "write": "managed",
+          "memory": "stable"
+        },
+        {
+          "collection": "keywords",
+          "read": "public",
+          "write": "controllers",
+          "memory": "stable"
+        },
+        {
+          "collection": "jobs",
+          "read": "public",
+          "write": "controllers",
+          "memory": "stable"
+        },
+        {
+          "collection": "job_artifacts",
+          "read": "public",
+          "write": "controllers",
+          "memory": "stable"
+        },
+        {
+          "collection": "content_describers",
+          "read": "public",
+          "write": "controllers",
           "memory": "stable"
         }
       ],
       "storage": [
         {
-          "collection": "content",
+          "collection": "c",
+          "_comment": "content must be named c to get /c/:contentid as urls",
           "read": "public",
-          "write": "public",
+          "write": "controllers",
+          "memory": "stable"
+        },
+        {
+          "collection": "job_artifacts",
+          "read": "public",
+          "write": "controllers",
           "memory": "stable"
         }
       ]
