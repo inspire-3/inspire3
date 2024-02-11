@@ -28,11 +28,11 @@
                     <!-- TODO: autofocus when edit mode is activated -->
                     <input @input="event => setPiidName({ ...piid, name: ((event.target as any)?.value ?? piid.name) })"
                         type="text" :value="piid.name" class="flex-grow w-10 input mr-2 p-1" />
-                    <button @click="saveAccount(); false" class="btn mr-[-10px]">✔️ </button>
+                    <span @click="saveAccount()" class="btn mr-[-10px]">✔️ </span>
                 </div>
             </li>
-            <li v-if="account" @click="setPiidName(createPiid())">
-                <button class="btn btn-slim m-2">➕</button>
+            <li v-if="account">
+                <button @click="newPiidEdit" class="btn btn-slim m-2">➕</button>
             </li>
             <li v-if="!account" class="menu-title text-center">
                 Loading...
@@ -145,6 +145,12 @@ const setPiidName = (piid: { piid: string, name: string }) => {
     } else {
         acc.data.piids.push(piid)
     }
+}
+
+const newPiidEdit = () => {
+    const piid = createPiid();
+    setPiidName(piid);
+    editPiid.value = piid;
 }
 
 authSubscribe((u) => {
