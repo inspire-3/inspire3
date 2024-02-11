@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import InfiniteLoader from './InfiniteLoader.vue';
+import InformationListingEntry from './InformationListingEntry.vue';
 
 const data = ref([1, 2, 3, 4, 5, 6])
 
@@ -17,9 +18,9 @@ const fetchNewContent = async (done: () => void) => {
 </script>
 
 <template>
-  <InfiniteLoader @bottom-reached="fetchNewContent">
-    <div v-for="item in data" :key="item" class="h-15 bg-gray-950 text-white my-1 rounded p-3">
+  <InfiniteLoader @bottom-reached="fetchNewContent" class="flex flex-col gap-2">
+    <InformationListingEntry v-for="item in data" :key="item">
       {{ item }}
-    </div>
+    </InformationListingEntry>
   </InfiniteLoader>
 </template>
