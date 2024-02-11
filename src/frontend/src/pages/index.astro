@@ -2,9 +2,10 @@
 import { SITE_TITLE, SITE_DESCRIPTION } from '../consts'
 import DefaultLayout from '../layouts/DefaultLayout.astro'
 import Placeholder from '../components/Placeholder.astro'
+import ContentListing from '../components/ContentListing.vue'
 ---
 
 <DefaultLayout siteTitle=`${SITE_TITLE}` siteDescription=`${SITE_DESCRIPTION}`>
     <Placeholder name="Hero" minHeight={500}></Placeholder>
-    <Placeholder name="ContentListing" description="Lists collected content" minHeight={1200}></Placeholder>
+    <ContentListing client:load />
 </DefaultLayout>
