@@ -1,6 +1,6 @@
 # inspire3
 
-Please visit [https://r.inspire3.me/3I223z4](inspire3 Technical Overview) to understand what this incarnation of inspire3 is all about.
+Please visit [inspire3 Technical Overview](https://r.inspire3.me/3I223z4) to understand what this incarnation of inspire3 is all about.
 
 ## Development host dependencies
 
