@@ -37,6 +37,7 @@
     "@junobuild/core": "^0.0.45",
     "@nanostores/vue": "^0.10.0",
     "@tailwindcss/typography": "^0.5.10",
+    "@vueuse/core": "^10.7.2",
     "astro": "^4.3.2",
     "nanostores": "^0.9.5",
     "tailwindcss": "^3.4.1",
