@@ -17,7 +17,7 @@ import Logo from './Logo.astro'
         <OmniSearch :location="'navigation'" client:media="(min-width: 1024px)" />
 
         <div class="pl-4">
-            <UserAccount client:load />
+            <UserAccount client:only="vue" />
         </div>
     </div>
 </div>

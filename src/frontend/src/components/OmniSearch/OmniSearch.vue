@@ -156,13 +156,6 @@ const isMultiSearch = computed(() => omniSearchState.actions.value.length > 1)
 onMounted(() => {
     resolveIsOmniSearchActivated(browserLocation.value.pathname)
     omniSearchState.initialize()
-
-    console.log('📌', {
-        show: toValue(show),
-        isLgScreen: toValue(isLgScreen),
-        location: props.location,
-    })
-
 })
 
 </script>

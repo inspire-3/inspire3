@@ -5,6 +5,7 @@
     "strictNullChecks": true
   },
   "exclude": [
-    "dist"
+    "dist",
+    "src/components/Logo.astro"
   ]
 }

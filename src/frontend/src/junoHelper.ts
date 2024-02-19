@@ -1,7 +1,5 @@
 import { AnonymousIdentity, type Identity } from "@dfinity/agent";
-import { initJuno, type Satellite, setDoc, type Doc } from "@junobuild/core";
-import { signIn, NFIDProvider, signOut } from "@junobuild/core";
-export { getDoc, setDoc, authSubscribe } from "@junobuild/core";
+import { signIn, NFIDProvider, signOut, initJuno, type Satellite, setDoc, } from "@junobuild/core-peer";
 
 import { nanoid } from "nanoid";
 
@@ -38,7 +36,7 @@ export const setDocAnon = async (data: { collection: AnonWritableCollection, doc
 export const login = () => {
   return signIn({
     provider: new NFIDProvider({
-      appName: "Inspire3",
+      appName: "inspire3",
       logoUrl: "https://inspire3.space/logo.png"
     }),
     maxTimeToLive: BigInt(7 * 24 * 60 * 60 * 1000 * 1000 * 1000),

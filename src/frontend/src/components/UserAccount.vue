@@ -53,14 +53,12 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import { authSubscribe, getDoc, init, login, logout, setDoc } from '../junoHelper'
-import type { Doc, User } from '@junobuild/core'
+import { init, login, logout} from '../junoHelper'
+import type { Doc, User } from '@junobuild/core-peer'
 import type { IUserAccount } from '../contracts/IUserAccount'
 import type { INamedProxyIdentity, IProxyIdentity } from '../contracts/IProxyIdentity'
 import { urlAlphabet, customAlphabet } from 'nanoid'
 const nanoid = customAlphabet(urlAlphabet, 32);
-import { useStore } from '@nanostores/vue'
-import { deepMap } from 'nanostores'
 
 export const componentName = 'UserAccount'
 export default defineComponent({
@@ -71,6 +69,7 @@ export default defineComponent({
 <script lang="ts" setup>
 import Avatar from './Avatar.vue'
 import { ref } from 'vue'
+import { authSubscribe, getDoc, setDoc } from '@junobuild/core-peer'
 
 const isSignedIn = ref(false);
 const user = ref<null | User>(null);
@@ -81,7 +80,7 @@ const selectedPiid = ref<IProxyIdentity | null>(null);
 init();
 
 {
-    const piid = localStorage.getItem("IN3-UserAccount-PIID");
+    const piid = window.localStorage.getItem('IN3-UserAccount-PIID');
     if (piid) selectedPiid.value = { piid };
 }
 
@@ -168,4 +167,6 @@ authSubscribe((u) => {
 const isActive = (piid: IProxyIdentity, active: IProxyIdentity | null): boolean => {
     return active?.piid === piid.piid;
 }
+
+const username = 'Jon Doe'
 </script>

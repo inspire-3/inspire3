@@ -456,13 +456,6 @@
     buffer "^6.0.3"
     simple-cbor "^0.4.1"
 
-"@dfinity/auth-client@^0.20.2":
-  version "0.20.2"
-  resolved "https://registry.yarnpkg.com/@dfinity/auth-client/-/auth-client-0.20.2.tgz#ee1619d234160161491888bcf6cd84be796dd280"
-  integrity sha512-HP1vTktFldkuQtv5JBQ3/IsnzV5UK3ma405jpCGYNq95kqgFEx746Ja3FrPw4x9dbAulOtu/Zc4zK9lcLv87mw==
-  dependencies:
-    idb "^7.0.2"
-
 "@dfinity/auth-client@^0.21.4":
   version "0.21.4"
   resolved "https://registry.yarnpkg.com/@dfinity/auth-client/-/auth-client-0.21.4.tgz#dc6ab9160752999f230769a8310b1460a00d5ba3"
@@ -688,10 +681,10 @@
   resolved "https://registry.yarnpkg.com/@junobuild/admin/-/admin-0.0.45.tgz#4f9c236f4250d816622a96bd8ffc4afa868cd6a8"
   integrity sha512-7N7gk9VyYiKynOf8ij6rNJ7R6gXEUZC2JO0q9qdYA33Kx2rENN17geFbp04+15hoSsV4khW++liGIk0XF4lSRg==
 
-"@junobuild/cli@^0.0.46":
-  version "0.0.46"
-  resolved "https://registry.yarnpkg.com/@junobuild/cli/-/cli-0.0.46.tgz#2b47e4dfa013f0525e905b28298e42f320f1aa5d"
-  integrity sha512-eGxAMuOS9pM16ZbfiyF+S7qiOCDA3DE/21c7H+RGhP8oT7J7VE6sAVwaiCdX7RSq0NmrR4+M2pIjRoey/w6ZzA==
+"@junobuild/cli@^0.0.50":
+  version "0.0.50"
+  resolved "https://registry.yarnpkg.com/@junobuild/cli/-/cli-0.0.50.tgz#c89353a6b0f4b3c31e0cc30ec5f6fbde12c8526f"
+  integrity sha512-felkk8bR+pFRVgCQ50fkJJQJiCnmWZiN9DBNHG6OTVs7Ztrj99rkNi0EJ1dBVVIV6tvFSSRnOnSBg7/N3AlcoA==
   dependencies:
     "@dfinity/agent" "^0.20.2"
     "@dfinity/candid" "^0.20.2"
@@ -718,17 +711,6 @@
   resolved "https://registry.yarnpkg.com/@junobuild/core-peer/-/core-peer-0.0.10.tgz#93d95bf8c10133fa8b7dbce4909d1ec4fb1f4e6a"
   integrity sha512-HOiAbtwCC2Fa8sNyTNIhPpg1vEHK4tEJ2HWwvAyFCmt0vBALvgC/j0T9SlmDGA9Jbs0eSSMBGDggopV7Kxgm2g==
   dependencies:
-    "@junobuild/utils" "*"
-
-"@junobuild/core@^0.0.45":
-  version "0.0.45"
-  resolved "https://registry.yarnpkg.com/@junobuild/core/-/core-0.0.45.tgz#467cc83260a17b8d9120bcef82351b3ec43d0766"
-  integrity sha512-ZxJORvGew97bHhx5CHZYxPeUYteE5KkZuza1kXO/m+M0S9KWI01Szp4jr36kKVuTawpcZALOGWx7QI39c8bOkQ==
-  dependencies:
-    "@dfinity/agent" "^0.20.2"
-    "@dfinity/auth-client" "^0.20.2"
-    "@dfinity/identity" "^0.20.2"
-    "@dfinity/principal" "^0.20.2"
     "@junobuild/utils" "*"
 
 "@junobuild/utils@*", "@junobuild/utils@^0.0.18":
