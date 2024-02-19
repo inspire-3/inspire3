@@ -4,13 +4,19 @@
             class="rounded-full px-4 min-h-[36px] w-28
                 font-poppins font-normal text-primary/50 shadow-sm hover:bg-primary/50 hover:text-primary-content border border-primary/50 hover:border-primary
                 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary text-base
-            ">
+            "
+            @click="login"
+    >
         Sign In
     </button>
 
     <div v-if="isSignedIn"
          class="dropdown dropdown-end mr-2" :class="[componentName]">
-        <div tabindex="0" role="button" class="flex avatar pl-4 pr-0">
+        <div
+            tabindex="0"
+            role="button"
+            class="flex avatar pl-4 pr-0"
+        >
             <Avatar :fullname="username" :classes="['w-7','h-7' ,'lg:w-10', 'lg:h-10']" />
         </div>
         <ul tabindex="0" class="dropdown-content z-[1] menu mt-2 p-2 shadow bg-base-100 rounded-3xl w-52">
@@ -69,7 +75,7 @@ export default defineComponent({
 <script lang="ts" setup>
 import Avatar from './Avatar.vue'
 import { ref } from 'vue'
-import { authSubscribe, getDoc, setDoc } from '@junobuild/core-peer'
+import { authSubscribe, getDoc, setDoc, signIn } from '@junobuild/core-peer'
 
 const isSignedIn = ref(false);
 const user = ref<null | User>(null);
